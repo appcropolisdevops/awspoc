@@ -1,0 +1,20 @@
+# Environment
+.env
+
+# Vendor
+src/vendor/
+
+# Database
+*.sqlite
+*.db
+data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
