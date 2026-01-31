@@ -1,0 +1,21 @@
+# AWS Region
+aws_region = "us-east-2"
+
+# Project name (used for resource naming)
+project_name = "hipaa-poc"
+
+# Domain name for the application
+domain_name = "taxplanner.app"
+
+# VPC CIDR block
+vpc_cidr = "10.0.0.0/16"
+
+# EC2 instance type
+instance_type = "t3.small"
+
+# Google OAuth Credentials (required)
+google_client_id     = "your-client-id.apps.googleusercontent.com"
+google_client_secret = "your-client-secret"
+
+# App secret (optional - will be auto-generated if not provided)
+# app_secret = "your-app-secret"
