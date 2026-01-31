@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIPAA-Compliant Secure Messaging POC - Documentation</title>
+    <style>
+        @media print {
+            body { font-size: 11pt; }
+            .page-break { page-break-before: always; }
+            h1, h2 { page-break-after: avoid; }
+            table { page-break-inside: avoid; }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            color: #1a365d;
+            border-bottom: 3px solid #2c5282;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #2c5282;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+
+        h3 {
+            color: #4a5568;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #edf2f7;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+
+        code {
+            background-color: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.85em;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+            color: white;
+            border-radius: 10px;
+        }
+
+        .header h1 {
+            color: white;
+            border: none;
+            margin: 0;
+        }
+
+        .header p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+
+        .toc {
+            background-color: #f7fafc;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .toc li {
+            margin: 5px 0;
+        }
+
+        .toc a {
+            color: #2c5282;
+            text-decoration: none;
+        }
+
+        .status-complete {
+            color: #38a169;
+            font-weight: bold;
+        }
+
+        .architecture-diagram {
+            background-color: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75em;
+            line-height: 1.3;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .note {
+            background-color: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning {
+            background-color: #fffaf0;
+            border-left: 4px solid #ed8936;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>HIPAA-Compliant Secure Messaging POC</h1>
+        <p><strong>Project Documentation</strong></p>
+        <p>Version 1.0 | January 31, 2026</p>
+        <p>Prepared for: Appcropolis</p>
+        <p>Prepared by: Naeem Dosh (DevOps Engineer)</p>
+    </div>
+
+    <div class="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li>1. <a href="#executive-summary">Executive Summary</a></li>
+            <li>2. <a href="#project-overview">Project Overview</a></li>
+            <li>3. <a href="#architecture">Architecture</a></li>
+            <li>4. <a href="#technology-stack">Technology Stack</a></li>
+            <li>5. <a href="#aws-infrastructure">AWS Infrastructure</a></li>
+            <li>6. <a href="#security-controls">Security Controls</a></li>
+            <li>7. <a href="#application-features">Application Features</a></li>
+            <li>8. <a href="#deployment-guide">Deployment Guide</a></li>
+            <li>9. <a href="#operations-guide">Operations Guide</a></li>
+            <li>10. <a href="#cost-breakdown">Cost Breakdown</a></li>
+            <li>11. <a href="#next-steps">Next Steps for Production</a></li>
+        </ul>
+    </div>
+
+    <h1 id="executive-summary">1. Executive Summary</h1>
+    <p>This document describes the Proof of Concept (POC) implementation for a HIPAA-compliant secure messaging application.</p>
+
+    <p><strong>Key Components:</strong></p>
+    <ul>
+        <li>PHP-based web application with Google OAuth authentication</li>
+        <li>SQLite database with encrypted storage</li>
+        <li>Docker containers for consistent deployment</li>
+        <li>AWS infrastructure with HIPAA-eligible services</li>
+        <li>Comprehensive security controls aligned with HIPAA requirements</li>
+    </ul>
+
+    <p><strong>Key Achievements:</strong></p>
+    <table>
+        <tr><th>Achievement</th><th>Status</th></tr>
+        <tr><td>All AWS services HIPAA BAA-eligible</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>End-to-end encryption (transit and rest)</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>No direct internet exposure for compute</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>Comprehensive audit logging</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>Infrastructure as Code (Terraform)</td><td class="status-complete">✅ Complete</td></tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h1 id="project-overview">2. Project Overview</h1>
+
+    <h2>2.1 Objectives</h2>
+    <table>
+        <tr><th>Objective</th><th>Status</th></tr>
+        <tr><td>Build secure, HIPAA-compliant environment</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>Implement Google OAuth for staff authentication</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>Set up encrypted database storage</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>Deploy on AWS with BAA-eligible services</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>Implement audit logging</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>Set up automated encrypted backups</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>Create Infrastructure as Code</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>Document all components</td><td class="status-complete">✅ Complete</td></tr>
+    </table>
+
+    <h2>2.2 Timeline</h2>
+    <table>
+        <tr><th>Milestone</th><th>Duration</th><th>Status</th></tr>
+        <tr><td>AWS Infrastructure</td><td>5 days</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>Containerization</td><td>5 days</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>Logging</td><td>1 day</td><td class="status-complete">✅ Complete</td></tr>
+        <tr><td>Backup & Documentation</td><td>1 day</td><td class="status-complete">✅ Complete</td></tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h1 id="architecture">3. Architecture</h1>
+
+    <h2>3.1 High-Level Architecture Diagram</h2>
+    <div class="architecture-diagram">
+┌─────────────────────────────────────────────────────────────────────┐
+│                              INTERNET                                │
+└─────────────────────────────────┬───────────────────────────────────┘
+                                  │
+                                  ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                         AWS CLOUD (us-east-2)                        │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │                      VPC (10.0.0.0/16)                        │  │
+│  │                                                               │  │
+│  │   ┌─────────────────────────────────────────────────────┐    │  │
+│  │   │              PUBLIC SUBNETS                          │    │  │
+│  │   │   ┌─────────────┐         ┌─────────────┐           │    │  │
+│  │   │   │     ALB     │         │     NAT     │           │    │  │
+│  │   │   │   (HTTPS)   │         │   Gateway   │           │    │  │
+│  │   │   └──────┬──────┘         └──────┬──────┘           │    │  │
+│  │   └──────────┼───────────────────────┼──────────────────┘    │  │
+│  │              │                       │                        │  │
+│  │   ┌──────────┼───────────────────────┼──────────────────┐    │  │
+│  │   │          │   PRIVATE SUBNETS     │                  │    │  │
+│  │   │   ┌──────▼──────┐         ┌──────▼──────┐           │    │  │
+│  │   │   │     EC2     │         │  Outbound   │           │    │  │
+│  │   │   │   Docker    │─────────│   Traffic   │           │    │  │
+│  │   │   │  PHP+Nginx  │         │             │           │    │  │
+│  │   │   └──────┬──────┘         └─────────────┘           │    │  │
+│  │   │          │                                          │    │  │
+│  │   │   ┌──────▼──────┐                                   │    │  │
+│  │   │   │  Encrypted  │                                   │    │  │
+│  │   │   │ EBS Volume  │                                   │    │  │
+│  │   │   │  (SQLite)   │                                   │    │  │
+│  │   │   └─────────────┘                                   │    │  │
+│  │   └─────────────────────────────────────────────────────┘    │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                                                                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐               │
+│  │      S3      │  │   Secrets    │  │  CloudWatch  │               │
+│  │   Backups    │  │   Manager    │  │     Logs     │               │
+│  │  (Encrypted) │  │              │  │              │               │
+│  └──────────────┘  └──────────────┘  └──────────────┘               │
+└──────────────────────────────────────────────────────────────────────┘
+    </div>
+
+    <h2>3.2 Data Flow</h2>
+    <ol>
+        <li><strong>User Request</strong> → HTTPS to ALB (port 443)</li>
+        <li><strong>ALB</strong> → HTTP to EC2 (port 80, internal only)</li>
+        <li><strong>Nginx</strong> → PHP-FPM (FastCGI)</li>
+        <li><strong>PHP Application</strong> → SQLite database (encrypted EBS)</li>
+        <li><strong>Audit Logs</strong> → CloudWatch Logs</li>
+        <li><strong>Backups</strong> → S3 (encrypted)</li>
+    </ol>
+
+    <div class="page-break"></div>
+
+    <h1 id="technology-stack">4. Technology Stack</h1>
+
+    <h2>4.1 Application Layer</h2>
+    <table>
+        <tr><th>Component</th><th>Technology</th><th>Version</th></tr>
+        <tr><td>Runtime</td><td>PHP</td><td>8.2</td></tr>
+        <tr><td>Web Server</td><td>Nginx</td><td>Alpine (latest)</td></tr>
+        <tr><td>Database</td><td>SQLite</td><td>3.x</td></tr>
+        <tr><td>Authentication</td><td>Google OAuth 2.0</td><td>-</td></tr>
+        <tr><td>OAuth Library</td><td>league/oauth2-google</td><td>4.x</td></tr>
+    </table>
+
+    <h2>4.2 Infrastructure Layer</h2>
+    <table>
+        <tr><th>Component</th><th>AWS Service</th><th>Notes</th></tr>
+        <tr><td>Compute</td><td>EC2 (t3.small)</td><td>Amazon Linux 2023</td></tr>
+        <tr><td>Load Balancer</td><td>ALB</td><td>Application Load Balancer</td></tr>
+        <tr><td>SSL/TLS</td><td>ACM</td><td>Managed certificates</td></tr>
+        <tr><td>Storage</td><td>EBS (gp3)</td><td>Encrypted</td></tr>
+        <tr><td>Object Storage</td><td>S3</td><td>Encrypted, versioned</td></tr>
+        <tr><td>Secrets</td><td>Secrets Manager</td><td>OAuth credentials</td></tr>
+        <tr><td>Logging</td><td>CloudWatch Logs</td><td>90-365 day retention</td></tr>
+        <tr><td>Networking</td><td>VPC</td><td>Private subnets</td></tr>
+        <tr><td>Access</td><td>SSM Session Manager</td><td>No SSH required</td></tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h1 id="aws-infrastructure">5. AWS Infrastructure</h1>
+
+    <h2>5.1 Account Information</h2>
+    <table>
+        <tr><th>Item</th><th>Value</th></tr>
+        <tr><td>AWS Account ID</td><td>730543776652</td></tr>
+        <tr><td>Region</td><td>us-east-2 (Ohio)</td></tr>
+        <tr><td>BAA Status</td><td class="status-complete">✅ Signed</td></tr>
+    </table>
+
+    <h2>5.2 Network Configuration</h2>
+    <table>
+        <tr><th>Resource</th><th>CIDR/Value</th></tr>
+        <tr><td>VPC</td><td>10.0.0.0/16</td></tr>
+        <tr><td>Public Subnet 1</td><td>10.0.0.0/24 (us-east-2a)</td></tr>
+        <tr><td>Public Subnet 2</td><td>10.0.1.0/24 (us-east-2b)</td></tr>
+        <tr><td>Private Subnet 1</td><td>10.0.10.0/24 (us-east-2a)</td></tr>
+        <tr><td>Private Subnet 2</td><td>10.0.11.0/24 (us-east-2b)</td></tr>
+    </table>
+
+    <h2>5.3 EC2 Instance</h2>
+    <table>
+        <tr><th>Setting</th><th>Value</th></tr>
+        <tr><td>Instance ID</td><td>i-0500bfb3b4ad44e24</td></tr>
+        <tr><td>Instance Type</td><td>t3.small (2 vCPU, 2 GB RAM)</td></tr>
+        <tr><td>AMI</td><td>Amazon Linux 2023</td></tr>
+        <tr><td>Subnet</td><td>Private Subnet 1</td></tr>
+        <tr><td>Public IP</td><td>None (private subnet)</td></tr>
+    </table>
+
+    <h2>5.4 Storage</h2>
+    <table>
+        <tr><th>Volume</th><th>Size</th><th>Type</th><th>Encrypted</th><th>Purpose</th></tr>
+        <tr><td>Root</td><td>20 GB</td><td>gp3</td><td>Yes</td><td>OS and application</td></tr>
+        <tr><td>Data</td><td>10 GB</td><td>gp3</td><td>Yes</td><td>SQLite database</td></tr>
+    </table>
+
+    <h2>5.5 Load Balancer</h2>
+    <table>
+        <tr><th>Setting</th><th>Value</th></tr>
+        <tr><td>Name</td><td>hipaa-poc-alb</td></tr>
+        <tr><td>DNS</td><td>hipaa-poc-alb-xxx.us-east-2.elb.amazonaws.com</td></tr>
+        <tr><td>TLS Policy</td><td>ELBSecurityPolicy-TLS13-1-2-2021-06</td></tr>
+        <tr><td>Certificate</td><td>ACM (DNS validated)</td></tr>
+    </table>
+
+    <h2>5.6 Security Groups</h2>
+    <h3>ALB Security Group</h3>
+    <table>
+        <tr><th>Direction</th><th>Port</th><th>Source</th><th>Purpose</th></tr>
+        <tr><td>Inbound</td><td>443</td><td>0.0.0.0/0</td><td>HTTPS traffic</td></tr>
+        <tr><td>Inbound</td><td>80</td><td>0.0.0.0/0</td><td>HTTP redirect</td></tr>
+    </table>
+
+    <h3>EC2 Security Group</h3>
+    <table>
+        <tr><th>Direction</th><th>Port</th><th>Source</th><th>Purpose</th></tr>
+        <tr><td>Inbound</td><td>80</td><td>ALB SG</td><td>HTTP from ALB only</td></tr>
+    </table>
+
+    <div class="note">
+        <strong>Note:</strong> No SSH port (22) is open. Access is via SSM Session Manager only.
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1 id="security-controls">6. Security Controls</h1>
+
+    <h2>6.1 HIPAA Alignment</h2>
+    <table>
+        <tr><th>HIPAA Requirement</th><th>Implementation</th></tr>
+        <tr><td>Access Control (164.312(a))</td><td>Google OAuth, session management</td></tr>
+        <tr><td>Audit Controls (164.312(b))</td><td>Application audit logging, CloudWatch</td></tr>
+        <tr><td>Integrity (164.312(c))</td><td>CSRF protection, input validation</td></tr>
+        <tr><td>Transmission Security (164.312(e))</td><td>TLS 1.3 via ALB</td></tr>
+    </table>
+
+    <h2>6.2 Encryption</h2>
+    <table>
+        <tr><th>Type</th><th>Resource</th><th>Method</th></tr>
+        <tr><td>At Rest</td><td>EBS Volumes</td><td>AES-256 (AWS managed)</td></tr>
+        <tr><td>At Rest</td><td>S3 Buckets</td><td>SSE-S3 (AES-256)</td></tr>
+        <tr><td>At Rest</td><td>Secrets Manager</td><td>AWS managed keys</td></tr>
+        <tr><td>In Transit</td><td>Client → ALB</td><td>TLS 1.3</td></tr>
+        <tr><td>In Transit</td><td>ALB → EC2</td><td>HTTP (internal VPC)</td></tr>
+    </table>
+
+    <h2>6.3 Network Security</h2>
+    <table>
+        <tr><th>Control</th><th>Implementation</th></tr>
+        <tr><td>No public IP on compute</td><td>EC2 in private subnet</td></tr>
+        <tr><td>No SSH access</td><td>SSM Session Manager only</td></tr>
+        <tr><td>Minimal security groups</td><td>Only required ports</td></tr>
+        <tr><td>VPC endpoints</td><td>AWS service access without internet</td></tr>
+    </table>
+
+    <h2>6.4 Application Security</h2>
+    <table>
+        <tr><th>Control</th><th>Implementation</th></tr>
+        <tr><td>XSS Prevention</td><td>htmlspecialchars() on all output</td></tr>
+        <tr><td>SQL Injection</td><td>PDO prepared statements</td></tr>
+        <tr><td>CSRF Protection</td><td>Token-based validation</td></tr>
+        <tr><td>Session Security</td><td>HttpOnly, Secure cookies</td></tr>
+    </table>
+
+    <h2>6.5 Audit Logging</h2>
+    <table>
+        <tr><th>Event</th><th>Data Captured</th></tr>
+        <tr><td>LOGIN</td><td>User ID, timestamp, IP address</td></tr>
+        <tr><td>LOGOUT</td><td>User ID, timestamp, IP address</td></tr>
+        <tr><td>MESSAGE_CREATE</td><td>User ID, message ID, subject</td></tr>
+        <tr><td>MESSAGE_DELETE</td><td>User ID, message ID</td></tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h1 id="application-features">7. Application Features</h1>
+
+    <h2>7.1 Core Functionality</h2>
+    <table>
+        <tr><th>Feature</th><th>Description</th></tr>
+        <tr><td>Authentication</td><td>Google OAuth login/logout</td></tr>
+        <tr><td>Send Message</td><td>Subject + body, stored in SQLite</td></tr>
+        <tr><td>View Messages</td><td>All users can see all messages</td></tr>
+        <tr><td>Delete Message</td><td>Users can delete their own messages</td></tr>
+        <tr><td>Audit Trail</td><td>All actions logged with timestamp and IP</td></tr>
+    </table>
+
+    <h2>7.2 User Interface</h2>
+    <ul>
+        <li><strong>Landing Page:</strong> Application branding, Google OAuth login</li>
+        <li><strong>Dashboard:</strong> Send messages, view all messages, delete own messages</li>
+        <li><strong>Audit Log:</strong> View all system events</li>
+    </ul>
+
+    <div class="page-break"></div>
+
+    <h1 id="deployment-guide">8. Deployment Guide</h1>
+
+    <h2>8.1 Local Development</h2>
+    <pre><code># 1. Clone repository
+git clone https://github.com/appcropolisdevops/awspoc.git
+cd awspoc
+
+# 2. Configure environment
+cp .env.example .env
+# Edit .env with Google OAuth credentials
+
+# 3. Install dependencies
+docker run --rm -v "$(pwd)/src:/app" -w /app composer:latest install
+
+# 4. Start application
+docker compose up -d
+
+# 5. Access application
+open http://localhost:8080</code></pre>
+
+    <h2>8.2 AWS Deployment</h2>
+    <pre><code># 1. Navigate to Terraform directory
+cd terraform
+
+# 2. Create terraform.tfvars (see template)
+
+# 3. Initialize and deploy
+terraform init
+terraform apply
+
+# 4. Add DNS records (from output)
+
+# 5. After DNS propagation
+terraform apply</code></pre>
+
+    <h2>8.3 DNS Configuration Required</h2>
+    <table>
+        <tr><th>Type</th><th>Name</th><th>Value</th></tr>
+        <tr><td>CNAME</td><td>_acm-validation...</td><td>(from Terraform output)</td></tr>
+        <tr><td>CNAME</td><td>taxplanner.app</td><td>hipaa-poc-alb-xxx.us-east-2.elb.amazonaws.com</td></tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h1 id="operations-guide">9. Operations Guide</h1>
+
+    <h2>9.1 Connecting to EC2</h2>
+    <pre><code>aws ssm start-session --target i-0500bfb3b4ad44e24 --region us-east-2</code></pre>
+
+    <h2>9.2 Application Management</h2>
+    <pre><code># View containers
+cd /app && docker compose ps
+
+# View logs
+docker compose logs -f php
+
+# Restart application
+docker compose restart
+
+# Update application
+git pull && docker compose up -d --build</code></pre>
+
+    <h2>9.3 Backup Operations</h2>
+    <pre><code># Manual backup
+/usr/local/bin/backup-db.sh
+
+# List backups
+aws s3 ls s3://hipaa-poc-backups-730543776652/backups/</code></pre>
+
+    <div class="page-break"></div>
+
+    <h1 id="cost-breakdown">10. Cost Breakdown</h1>
+
+    <h2>10.1 Monthly Estimated Costs</h2>
+    <table>
+        <tr><th>Resource</th><th>Specification</th><th>Monthly Cost</th></tr>
+        <tr><td>EC2</td><td>t3.small (on-demand)</td><td>$15.18</td></tr>
+        <tr><td>EBS</td><td>30 GB gp3</td><td>$2.40</td></tr>
+        <tr><td>NAT Gateway</td><td>Per hour + data</td><td>$35.00</td></tr>
+        <tr><td>ALB</td><td>Per hour + LCU</td><td>$20.00</td></tr>
+        <tr><td>S3</td><td>~1 GB storage</td><td>$0.50</td></tr>
+        <tr><td>Data Transfer</td><td>~10 GB</td><td>$1.00</td></tr>
+        <tr><td>CloudWatch</td><td>Logs</td><td>$2.00</td></tr>
+        <tr><td>Secrets Manager</td><td>1 secret</td><td>$0.40</td></tr>
+        <tr><td><strong>Total</strong></td><td></td><td><strong>~$76.48</strong></td></tr>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h1 id="next-steps">11. Next Steps for Production</h1>
+
+    <h2>11.1 Recommended Improvements</h2>
+    <table>
+        <tr><th>Area</th><th>Recommendation</th><th>Priority</th></tr>
+        <tr><td>Database</td><td>Migrate to MongoDB Atlas</td><td>High</td></tr>
+        <tr><td>High Availability</td><td>Auto Scaling Group</td><td>High</td></tr>
+        <tr><td>CI/CD</td><td>GitHub Actions pipeline</td><td>Medium</td></tr>
+        <tr><td>Monitoring</td><td>CloudWatch Alarms, SNS alerts</td><td>Medium</td></tr>
+        <tr><td>WAF</td><td>AWS WAF on ALB</td><td>Medium</td></tr>
+        <tr><td>Backup</td><td>Cross-region replication</td><td>Low</td></tr>
+    </table>
+
+    <h2>11.2 Multi-Tenant Architecture (Future)</h2>
+    <ul>
+        <li>ECS/EKS for container orchestration</li>
+        <li>Per-tenant database isolation</li>
+        <li>Tenant-specific S3 buckets</li>
+        <li>API Gateway for routing</li>
+    </ul>
+
+    <hr>
+
+    <div style="text-align: center; margin-top: 40px; color: #718096;">
+        <p><strong>Document Version:</strong> 1.0</p>
+        <p><strong>Last Updated:</strong> January 31, 2026</p>
+        <p><strong>Classification:</strong> Confidential</p>
+        <p style="margin-top: 20px;">
+            <em>All AWS services used are HIPAA-eligible per:</em><br>
+            <a href="https://aws.amazon.com/compliance/hipaa-eligible-services-reference/">aws.amazon.com/compliance/hipaa-eligible-services-reference</a>
+        </p>
+    </div>
+</body>
+</html>
