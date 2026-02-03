@@ -9,6 +9,16 @@ GENERATED PDF DOCUMENTATION
 
 Client Documentation (For End Users):
 -------------------------------------
+* 01-Deployment-Guide.pdf (86 KB) *** UPDATED ***
+  - CRITICAL: App already deployed - must destroy first
+  - Complete Terraform infrastructure guide
+  - AWS Region: us-east-2 (Ohio)
+  - 100% Infrastructure-as-Code deployment
+  - Local Docker setup for testing
+  - Secrets Manager configuration
+  - Complete destroy and redeploy procedures
+  - Comprehensive troubleshooting
+
 * 02-Quick-Start.pdf (118 KB)
   - 5-minute setup guide
   - Essential steps to get started
@@ -108,10 +118,11 @@ pandoc FILE.md -o FILE.pdf --pdf-engine=xelatex --toc
 WHAT YOU HAVE
 =================================================================
 
-Total Generated: 6 out of 11 PDFs (1.3 MB)
-Success Rate: ~55%
+Total Generated: 7 out of 12 PDFs (1.45 MB)
+Success Rate: ~58%
 
 The most important technical documentation is complete:
+* Deployment Guide (NEW)
 * Architecture
 * Terraform Guide
 * Infrastructure
