@@ -1,0 +1,296 @@
+/* Professional PDF Stylesheet */
+/* DevOps Engineer: Naeem Dosh */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+@page {
+  size: A4;
+  margin: 2cm 2.5cm;
+  @top-right {
+    content: "Confidential";
+    font-size: 8pt;
+    color: #94a3b8;
+    font-family: 'Inter', sans-serif;
+  }
+  @bottom-center {
+    content: counter(page) " / " counter(pages);
+    font-size: 8pt;
+    color: #64748b;
+    font-family: 'Inter', sans-serif;
+  }
+  @bottom-left {
+    content: "Naeem Dosh | DevOps Engineer";
+    font-size: 7pt;
+    color: #94a3b8;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@page :first {
+  @top-right { content: none; }
+  @bottom-left { content: none; }
+  @bottom-center { content: none; }
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 10pt;
+  line-height: 1.6;
+  color: #1e293b;
+  font-weight: 400;
+}
+
+/* Headings */
+h1 {
+  font-size: 24pt;
+  font-weight: 700;
+  color: #0f172a;
+  border-bottom: 3px solid #3b82f6;
+  padding-bottom: 12px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  font-size: 16pt;
+  font-weight: 600;
+  color: #1e40af;
+  border-bottom: 1.5px solid #dbeafe;
+  padding-bottom: 8px;
+  margin-top: 30px;
+  margin-bottom: 14px;
+  page-break-after: avoid;
+}
+
+h3 {
+  font-size: 12pt;
+  font-weight: 600;
+  color: #1e3a5f;
+  margin-top: 22px;
+  margin-bottom: 10px;
+  page-break-after: avoid;
+}
+
+h4 {
+  font-size: 10.5pt;
+  font-weight: 600;
+  color: #334155;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+/* Paragraphs */
+p {
+  margin-bottom: 10px;
+  text-align: justify;
+}
+
+/* Strong / Bold */
+strong {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Emphasis */
+em {
+  color: #475569;
+}
+
+/* Links */
+a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Horizontal rules */
+hr {
+  border: none;
+  border-top: 1.5px solid #e2e8f0;
+  margin: 24px 0;
+}
+
+/* Code blocks */
+pre {
+  background-color: #0f172a;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 8.5pt;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  margin: 12px 0;
+  border-left: 4px solid #3b82f6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: 8.5pt;
+  color: #e2e8f0;
+}
+
+/* Inline code */
+code {
+  background-color: #f1f5f9;
+  color: #dc2626;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 8.5pt;
+  font-weight: 500;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 9pt;
+  page-break-inside: avoid;
+}
+
+thead {
+  background-color: #1e40af;
+  color: white;
+}
+
+thead th {
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 9pt;
+  letter-spacing: 0.3px;
+}
+
+tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+tbody td {
+  padding: 8px 14px;
+  vertical-align: top;
+}
+
+/* Lists */
+ul, ol {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+
+li {
+  margin-bottom: 5px;
+  line-height: 1.5;
+}
+
+li > ul, li > ol {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+/* Blockquotes - used for callouts */
+blockquote {
+  background-color: #eff6ff;
+  border-left: 4px solid #3b82f6;
+  padding: 12px 16px;
+  margin: 14px 0;
+  border-radius: 0 6px 6px 0;
+  color: #1e40af;
+  font-size: 9.5pt;
+}
+
+blockquote p {
+  margin: 0;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+
+/* Table of Contents */
+nav#TOC {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 30px;
+  page-break-after: always;
+}
+
+nav#TOC::before {
+  content: "Table of Contents";
+  font-size: 14pt;
+  font-weight: 700;
+  color: #1e40af;
+  display: block;
+  margin-bottom: 14px;
+  border-bottom: 2px solid #3b82f6;
+  padding-bottom: 8px;
+}
+
+nav#TOC ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+nav#TOC > ul > li {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+nav#TOC > ul > li > ul > li {
+  font-weight: 400;
+  color: #475569;
+  margin-bottom: 3px;
+  padding-left: 16px;
+}
+
+nav#TOC a {
+  color: #1e293b;
+  text-decoration: none;
+}
+
+/* Page break helpers */
+h1, h2 {
+  page-break-after: avoid;
+}
+
+table, pre, blockquote {
+  page-break-inside: avoid;
+}
+
+/* First page title styling */
+h1:first-of-type {
+  font-size: 28pt;
+  text-align: center;
+  border-bottom: none;
+  margin-bottom: 6px;
+  padding-bottom: 0;
+}
+
+h1:first-of-type + p {
+  text-align: center;
+  font-size: 12pt;
+  color: #475569;
+  font-weight: 500;
+}
+
+h1:first-of-type + p + p {
+  text-align: center;
+  font-size: 9pt;
+  color: #64748b;
+  font-style: italic;
+  margin-bottom: 30px;
+}
