@@ -24,7 +24,7 @@ if (Auth::isLoggedIn()) {
     <div class="container">
         <div class="login-card">
             <h1>Secure Messaging</h1>
-            <p>HIPAA-Compliant POC Application</p>
+            <p>Enterprise Secure Messaging</p>
             <p class="subtitle">Sign in with your authorized Google account to access the system.</p>
             <a href="/login.php" class="btn btn-google">
                 <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
