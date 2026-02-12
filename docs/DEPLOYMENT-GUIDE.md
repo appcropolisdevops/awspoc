@@ -924,6 +924,130 @@ sudo sqlite3 /data/db/app.sqlite < backup.sql
 
 ---
 
+## CI/CD Pipeline (GitHub Actions)
+
+The project includes automated CI/CD pipelines using GitHub Actions. Every code push is automatically tested, built, and deployed.
+
+### Pipeline Overview
+
+```
+Developer pushes code to GitHub
+         ↓
+┌─────────────────────┐
+│   CI Pipeline       │  (Every push & PR)
+│   - PHP Lint        │
+│   - Security Check  │
+│   - Docker Build    │
+│   - Health Check    │
+└────────┬────────────┘
+         ↓ (main branch only)
+┌─────────────────────┐
+│   CD Pipeline       │  (Auto-deploy)
+│   - Pull latest code│
+│   - Install deps    │
+│   - Rebuild Docker  │
+│   - Health check    │
+└────────┬────────────┘
+         ↓
+   Application Live at
+  https://taxplanner.app
+```
+
+### Three Pipelines
+
+| Pipeline | Trigger | What It Does |
+|----------|---------|--------------|
+| **CI - Build & Test** | Every push/PR | Lint, security check, Docker build, health check |
+| **CD - Deploy to AWS** | Push to main | Deploys code to EC2 via SSM |
+| **Terraform** | Changes in terraform/ | Plans and applies infrastructure changes |
+
+### Required GitHub Secrets
+
+Go to **Repository Settings → Secrets and Variables → Actions** and add:
+
+| Secret Name | Description | Required |
+|-------------|-------------|----------|
+| `AWS_ACCESS_KEY_ID` | AWS IAM access key | Yes |
+| `AWS_SECRET_ACCESS_KEY` | AWS IAM secret key | Yes |
+| `EC2_INSTANCE_ID` | EC2 instance ID (e.g., i-0abc123) | Yes |
+| `GOOGLE_CLIENT_ID` | Google OAuth Client ID | Yes |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth Client Secret | Yes |
+
+### How to Set Up Secrets
+
+```bash
+# Get EC2 Instance ID from Terraform
+cd terraform
+terraform output ec2_instance_id
+```
+
+Then in GitHub:
+1. Go to https://github.com/appcropolisdevops/awspoc/settings/secrets/actions
+2. Click "New repository secret"
+3. Add each secret listed above
+
+### CI Pipeline (ci.yml)
+
+**Triggers:** Every push to `main`/`develop` and every PR
+
+**Steps:**
+1. **PHP Lint** - Checks all PHP files for syntax errors
+2. **Security Check** - Scans for hardcoded secrets, verifies .env is not committed
+3. **Docker Build** - Builds Docker images and runs containers
+4. **Health Check** - Verifies application responds on port 8080
+
+### CD Pipeline (deploy.yml)
+
+**Triggers:** Push to `main` (ignores docs/ and .md changes)
+
+**Steps:**
+1. Runs CI checks first
+2. Configures AWS credentials
+3. Verifies EC2 instance is running
+4. **Deploys via SSM** (no SSH needed):
+   - Pulls latest code from GitHub
+   - Installs Composer dependencies
+   - Rebuilds and restarts Docker containers
+   - Runs health check
+5. Outputs deployment summary
+
+**Manual Trigger:** Go to Actions → CD - Deploy to AWS → Run workflow
+
+### Terraform Pipeline (terraform.yml)
+
+**Triggers:** Changes to `terraform/` files
+
+**On Pull Request:**
+- Runs `terraform plan`
+- Posts plan output as PR comment
+
+**On Push to Main:**
+- Runs `terraform apply` automatically
+
+**Manual Options:**
+- Plan (preview changes)
+- Apply (deploy infrastructure)
+- Destroy (teardown infrastructure)
+
+### Deployment Flow
+
+**Automatic (recommended):**
+```bash
+# Make code changes
+git add .
+git commit -m "Update feature X"
+git push origin main
+# → CI runs → CD deploys automatically
+```
+
+**Manual:**
+```bash
+# Go to GitHub → Actions → CD - Deploy to AWS
+# Click "Run workflow" → Select branch → Run
+```
+
+---
+
 ## Important Notes
 
 ### Cost Management

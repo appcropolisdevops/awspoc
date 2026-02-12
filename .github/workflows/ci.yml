@@ -1,0 +1,109 @@
+# CI Pipeline - Build & Test
+# Runs on every push and pull request
+# DevOps Engineer: Naeem Dosh
+
+name: CI - Build & Test
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  PHP_VERSION: '8.2'
+
+jobs:
+  lint:
+    name: PHP Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: pdo, pdo_sqlite, sqlite3
+
+      - name: PHP Syntax Check
+        run: |
+          find src/ -name "*.php" -print0 | xargs -0 -n1 php -l
+
+  security:
+    name: Security Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for secrets in code
+        run: |
+          echo "Checking for hardcoded secrets..."
+          # Check for common secret patterns
+          if grep -rn "GOCSPX-\|AIza\|sk_live_\|sk_test_" src/ --include="*.php" 2>/dev/null; then
+            echo "WARNING: Possible hardcoded secrets found!"
+            exit 1
+          fi
+          echo "No hardcoded secrets found."
+
+      - name: Check .env not committed
+        run: |
+          if [ -f .env ]; then
+            echo "ERROR: .env file should not be committed!"
+            exit 1
+          fi
+          echo ".env file is not committed. Good!"
+
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: [lint, security]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker images
+        run: docker compose build
+
+      - name: Start containers
+        run: |
+          # Create dummy .env for testing
+          cat > .env << 'EOF'
+          GOOGLE_CLIENT_ID=test-client-id
+          GOOGLE_CLIENT_SECRET=test-client-secret
+          GOOGLE_REDIRECT_URI=http://localhost:8080/login.php
+          APP_SECRET=test-secret-key-for-ci-pipeline-only
+          DB_PATH=/var/www/data/app.sqlite
+          EOF
+          docker compose up -d
+
+      - name: Wait for containers
+        run: sleep 10
+
+      - name: Health check
+        run: |
+          # Check nginx is responding
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080 || echo "000")
+          echo "HTTP Response Code: $HTTP_CODE"
+          if [ "$HTTP_CODE" = "000" ]; then
+            echo "Container not responding. Checking logs..."
+            docker compose logs
+            exit 1
+          fi
+          echo "Application is responding!"
+
+      - name: Check container status
+        run: |
+          docker compose ps
+          echo "---"
+          echo "PHP container logs:"
+          docker compose logs php | tail -20
+          echo "---"
+          echo "Nginx container logs:"
+          docker compose logs nginx | tail -20
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v
